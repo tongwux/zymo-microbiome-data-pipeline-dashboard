@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FiUser, FiMail, FiPhone, FiMapPin, FiEdit2, FiSave, FiX, FiCheckCircle, FiAlertCircle, FiUpload } from 'react-icons/fi';
+import Sidebar from './Sidebar';
 import './Account.css';
 
 const Account = () => {
@@ -55,21 +56,23 @@ const Account = () => {
   };
 
   return (
-    <div className="dashboard-main">
-      <div className="dashboard-content">
-        <div className="service-detail">
-          <div className="service-header">
-            <div className="service-icon" style={{ color: '#00843D' }}>
+    <div className="dashboard account-page-wrapper">
+      <Sidebar />
+      <div className="dashboard-main account-main account-layout">
+        <div className="dashboard-content account-content account-shell">
+          <div className="service-detail account-detail account-card">
+          <div className="service-header account-header-shell">
+            <div className="service-icon account-header-icon" style={{ color: '#00843D' }}>
               <FiUser />
             </div>
-            <div className="service-info">
+            <div className="service-info account-header-info">
               <h1>Account Settings</h1>
               <p>Manage your account information and preferences</p>
             </div>
           </div>
 
-          <div className="service-form-container">
-            <div className="account-page">
+          <div className="service-form-container account-form-container account-form-shell">
+            <div className="account-page account-page-full">
               <div className="account-header">
                 <h1>Account Settings</h1>
                 <div className="account-actions">
@@ -236,6 +239,7 @@ const Account = () => {
                 </div>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>

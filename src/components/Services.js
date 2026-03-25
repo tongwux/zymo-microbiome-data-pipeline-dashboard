@@ -1,15 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   FiActivity, 
   FiDatabase, 
   FiBarChart2, 
   FiCode, 
   FiBookOpen,
-  FiSettings,
-  FiSearch,
-  FiFilter,
-  FiShoppingCart,
-  FiInfo
+  FiSettings
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
@@ -17,11 +13,6 @@ import './Services.css';
 
 const Services = () => {
   const navigate = useNavigate();
-  const [notifications] = useState([
-    { id: 1, message: 'New service request received', type: 'info' },
-    { id: 2, message: 'Service update available', type: 'warning' },
-    { id: 3, message: 'Service completed successfully', type: 'success' },
-  ]);
 
   const services = [
     {
@@ -94,29 +85,27 @@ const Services = () => {
               </div>
             </div>
 
-            <div className="service-form-container">
-              <div className="services-page">
-                <div className="services-grid">
-                  {services.map((service) => (
-                    <div 
-                      key={service.id} 
-                      className="service-card"
-                    >
-                      <div className="service-icon" style={{ color: service.color }}>
-                        {service.icon}
-                      </div>
-                      <h3>{service.title}</h3>
-                      <p>{service.description}</p>
-                      <button 
-                        className="service-button" 
-                        style={{ backgroundColor: service.color }}
-                        onClick={() => handleServiceClick(service)}
-                      >
-                        Learn More
-                      </button>
+            <div className="service-form-container services-content">
+              <div className="services-grid">
+                {services.map((service) => (
+                  <div 
+                    key={service.id} 
+                    className="service-card"
+                  >
+                    <div className="service-icon" style={{ color: service.color }}>
+                      {service.icon}
                     </div>
-                  ))}
-                </div>
+                    <h3>{service.title}</h3>
+                    <p>{service.description}</p>
+                    <button 
+                      className="service-button" 
+                      style={{ backgroundColor: service.color }}
+                      onClick={() => handleServiceClick(service)}
+                    >
+                      Learn More
+                    </button>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

@@ -1,0 +1,276 @@
+.onboarding-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.onboarding-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.onboarding-header h1 {
+  color: #00843D;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.progress-bar {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+.progress-bar::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #e9ecef;
+  z-index: 1;
+}
+
+.progress-step {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #666;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.progress-step.active {
+  background: #00843D;
+  border-color: #00843D;
+  color: white;
+  transform: scale(1.1);
+}
+
+.progress-step.completed {
+  background: #00843D;
+  border-color: #00843D;
+  color: white;
+}
+
+.step-content {
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.step-content h2 {
+  color: #2d3436;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.step-description {
+  color: #636e72;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.form-group {
+  margin-bottom: 1.75rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: #2d3436;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="file"] {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 2px solid #e9ecef;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="tel"]:focus {
+  outline: none;
+  border-color: #00843D;
+  box-shadow: 0 0 0 3px rgba(0, 132, 61, 0.1);
+}
+
+.form-group input[type="file"] {
+  padding: 0.75rem;
+  background: white;
+  cursor: pointer;
+}
+
+.file-hint {
+  font-size: 0.875rem;
+  color: #636e72;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+.error {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  display: block;
+  font-weight: 500;
+}
+
+.skip-verification {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.skip-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.skip-checkbox input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid #e9ecef;
+  cursor: pointer;
+}
+
+.skip-warning {
+  color: #636e72;
+  font-size: 0.875rem;
+  margin-top: 0.75rem;
+  line-height: 1.5;
+  padding-left: 1.5rem;
+  border-left: 3px solid #ffc107;
+}
+
+.form-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.back-button,
+.next-button,
+.submit-button,
+.skip-button {
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.back-button {
+  background: #f8f9fa;
+  color: #636e72;
+}
+
+.next-button,
+.submit-button {
+  background: #00843D;
+  color: white;
+}
+
+.skip-button {
+  background: #f8f9fa;
+  color: #636e72;
+  border: 1px solid #e9ecef;
+}
+
+.back-button:hover {
+  background: #e9ecef;
+}
+
+.next-button:hover,
+.submit-button:hover {
+  background: #006b32;
+  transform: translateY(-2px);
+}
+
+.skip-button:hover {
+  background: #e9ecef;
+}
+
+.final-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .onboarding-container {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .onboarding-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .progress-step {
+    width: 40px;
+    height: 40px;
+    font-size: 0.875rem;
+  }
+
+  .form-navigation {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .back-button,
+  .next-button,
+  .submit-button,
+  .skip-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .final-actions {
+    flex-direction: column;
+  }
+
+  .step-content {
+    padding: 1rem;
+  }
+} 

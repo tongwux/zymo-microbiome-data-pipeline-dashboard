@@ -1,124 +1,96 @@
-# ZYMO Research Project Management System
+# ZYMO Enterprise Portal
 
-A modern React-based web application for managing sequencing projects and laboratory services at ZYMO Research.
+A modern web application for enterprise verification and onboarding process.
 
 ## Features
 
-### Dashboard
-- Project statistics and overview
-- Recent updates and notifications
-- To-do list for task management
-- Real-time project status tracking
-
-### Project Management
-- **Ongoing Projects**
-  - View active project status
-  - Track project progress
-  - Step-by-step progress monitoring
-  - Project details and updates
-
-- **Completed Projects**
-  - Access completed project reports
-  - Download raw data
-  - View project details and metrics
-  - Add and manage project notes
-
-### Services
-- Browse available sequencing services
-- Detailed service information
-- Easy order placement
-- Customizable service options
-
-### Cart System
-- Add services to cart
-- Review order details
-- Secure checkout process
-- Order confirmation
+- Company verification process
+- Financial department verification
+- Bank account verification
+- Responsive design
+- Modern UI/UX
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js (v14.0.0 or higher)
-- npm (v6.0.0 or higher)
+
+- Node.js (v14 or higher)
+- npm (v6 or higher)
 
 ### Installation
 
-1. Clone the repository
+1. Clone the repository:
 ```bash
-git clone https://github.com/tongwux/zymo.git
-cd zymo
+git clone https://github.com/yourusername/zymo-enterprise.git
+cd zymo-enterprise
 ```
 
-2. Install dependencies
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-3. Start the development server
+3. Start the development server:
 ```bash
 npm start
 ```
 
-The application will open in your default browser at `http://localhost:3000`
+The application will be available at `http://localhost:3000`
 
-## Project Structure
+## Building for Production
 
-```
-zymo/
-├── public/
-│   └── index.html
-├── src/
-│   ├── components/
-│   │   ├── Dashboard.js
-│   │   ├── OngoingProjects.js
-│   │   ├── CompletedProjects.js
-│   │   ├── Services.js
-│   │   └── ...
-│   ├── context/
-│   │   └── CartContext.js
-│   ├── App.js
-│   └── index.js
-└── package.json
+To create a production build:
+
+```bash
+npm run build
 ```
 
-## Key Features
+This will create an optimized production build in the `build` directory.
 
-1. **Project Tracking**
-   - Real-time status updates
-   - Progress visualization
-   - Step completion tracking
+## Deployment
 
-2. **Report Management**
-   - Generate and view reports
-   - Download raw data
-   - Add project notes
+### Option 1: Deploy to GitHub Pages
 
-3. **User Interface**
-   - Modern, responsive design
-   - Intuitive navigation
-   - Real-time notifications
+1. Update the `homepage` field in `package.json` with your GitHub Pages URL
+2. Install gh-pages:
+```bash
+npm install --save-dev gh-pages
+```
+3. Deploy:
+```bash
+npm run deploy
+```
 
-4. **Service Management**
-   - Service catalog
-   - Order processing
-   - Cart management
+### Option 2: Deploy to Netlify
+
+1. Push your code to a Git repository
+2. Create a new site on Netlify and connect it to your repository
+3. Set the build command to `npm run build`
+4. Set the publish directory to `build`
+5. Deploy
+
+### Option 3: Deploy to Vercel
+
+1. Push your code to a Git repository
+2. Create a new project on Vercel and connect it to your repository
+3. Vercel will automatically detect the React app and configure the build settings
+4. Deploy
+
+## Available Scripts
+
+- `npm start` - Runs the app in development mode
+- `npm test` - Launches the test runner
+- `npm run build` - Builds the app for production
+- `npm run eject` - Ejects from Create React App
+- `npm run deploy` - Deploys to GitHub Pages
 
 ## Technologies Used
 
-- React.js
+- React
 - React Router
 - React Icons
-- Context API for state management
-- CSS for styling
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+- CSS3
 
 ## License
 
-This project is proprietary and confidential. All rights reserved. 
+This project is licensed under the MIT License. 

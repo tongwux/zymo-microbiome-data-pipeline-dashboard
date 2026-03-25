@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FiHome, FiFolder, FiBarChart2, FiShoppingCart, FiSettings, FiHelpCircle, FiUser, FiLogOut, FiBell } from 'react-icons/fi';
+import { FiHome, FiFolder, FiBarChart2, FiShoppingCart, FiSettings, FiHelpCircle, FiUser, FiLogOut } from 'react-icons/fi';
 import './Sidebar.css';
 
 const Sidebar = ({ onLogout }) => {
@@ -8,7 +8,7 @@ const Sidebar = ({ onLogout }) => {
   const location = useLocation();
 
   const mainNavItems = [
-    { path: '/', label: 'Dashboard', icon: FiHome },
+    { path: '/dashboard', label: 'Dashboard', icon: FiHome },
     { 
       path: '/services', 
       label: 'Services', 
@@ -113,14 +113,6 @@ const Sidebar = ({ onLogout }) => {
           </nav>
         </div>
       </div>
-
-      <button 
-        className="notification-icon" 
-        type="button"
-        aria-label="Go to settings"
-      >
-        <FiBell size={20} />
-      </button>
     </div>
   );
 };

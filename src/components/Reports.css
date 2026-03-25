@@ -1,3 +1,31 @@
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+.dashboard-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 280px;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 2rem;
+  background-color: #f5f6fa;
+}
+
+.reports-page,
+.reports-main,
+.reports-content,
+.reports-detail,
+.reports-form-container,
+.reports-grid-full {
+  width: 100%;
+  max-width: none;
+}
+
 .service-detail {
   padding: 2rem;
   background: #fff;
@@ -156,6 +184,18 @@
 }
 
 @media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .dashboard-main {
+    margin-left: 0;
+  }
+
+  .dashboard-content {
+    padding: 1rem;
+  }
+
   .service-detail {
     padding: 1rem;
   }

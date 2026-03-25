@@ -3,7 +3,18 @@ import React, { createContext, useContext, useState } from 'react';
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState([
+    {
+      id: 1,
+      serviceName: '16S/ITS Amplicon Sequencing',
+      sampleFormat: 'DNA',
+      numberOfSamples: 1,
+      sampleType: 'Environmental',
+      services: ['Sequencing', 'Analysis'],
+      targetRegion: ['V3-V4'],
+      price: 5000
+    }
+  ]);
 
   const addToCart = (item) => {
     setCartItems(prevItems => [...prevItems, item]);

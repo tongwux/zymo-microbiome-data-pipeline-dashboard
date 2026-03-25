@@ -8,7 +8,7 @@ const OrderSuccess = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="dashboard">
+    <div className="dashboard order-success-page">
       <Sidebar />
       <div className="dashboard-main">
         <div className="dashboard-content">

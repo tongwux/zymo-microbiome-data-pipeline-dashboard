@@ -91,41 +91,6 @@
   height: 20px;
 }
 
-.notification-icon {
-  position: absolute;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  width: 40px;
-  height: 40px;
-  background-color: #00843D;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: none;
-  padding: 0;
-  z-index: 1000;
-}
-
-.notification-icon:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.notification-icon svg {
-  width: 20px;
-  height: 20px;
-  color: white;
-}
-
-.notification-icon:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 132, 61, 0.3);
-}
-
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
@@ -141,13 +106,6 @@
 
   .nav-item {
     padding: 0.5rem 0.75rem;
-  }
-
-  .notification-icon {
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-    z-index: 1001;
   }
 }
 

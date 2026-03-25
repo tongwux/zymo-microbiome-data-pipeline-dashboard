@@ -65,11 +65,7 @@ const OngoingProjects = () => {
   ];
 
   const handleViewDetails = (project) => {
-    setSelectedProject(project);
-  };
-
-  const handleCloseDetails = () => {
-    setSelectedProject(null);
+    navigate(`/projects/${project.id}`);
   };
 
   const handleModifyProject = (action) => {
@@ -205,7 +201,7 @@ const OngoingProjects = () => {
           <div className="modal-content">
             <div className="modal-header">
               <h2>{selectedProject.name}</h2>
-              <button className="close-button" onClick={handleCloseDetails}>
+              <button className="close-button" onClick={() => setSelectedProject(null)}>
                 <FiX />
               </button>
             </div>
