@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="100" cy="100" r="90" fill="#F0F7F4"/>
+  
+  <!-- ZYMO Text -->
+  <text x="100" y="120" font-family="Arial, sans-serif" font-size="60" font-weight="bold" fill="#00843D" text-anchor="middle">
+    ZYMO
+  </text>
+  
+  <!-- DNA Helix -->
+  <path d="M60 80 Q100 60 140 80" stroke="#00843D" stroke-width="4" fill="none"/>
+  <path d="M60 100 Q100 120 140 100" stroke="#00843D" stroke-width="4" fill="none"/>
+  <path d="M60 120 Q100 140 140 120" stroke="#00843D" stroke-width="4" fill="none"/>
+  
+  <!-- Connecting Lines -->
+  <line x1="60" y1="80" x2="60" y2="120" stroke="#00843D" stroke-width="4"/>
+  <line x1="140" y1="80" x2="140" y2="120" stroke="#00843D" stroke-width="4"/>
+</svg> 
