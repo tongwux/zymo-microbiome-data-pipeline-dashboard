@@ -1,96 +1,66 @@
-# ZYMO Enterprise Portal
+# ZYMO Microbiome Portal
 
-A modern web application for enterprise verification and onboarding process.
+A React frontend prototype exploring the customer journey from sequencing-service selection and enterprise onboarding to orders, project tracking, and reports.
 
-## Features
+**Current status:** workflow prototype with demonstration data. This repository does not yet implement a microbiome processing pipeline or production authentication.
 
-- Company verification process
-- Financial department verification
-- Bank account verification
-- Responsive design
-- Modern UI/UX
+## Implemented
 
-## Getting Started
+- Routes and screens for individual/enterprise login, onboarding, services, cart, orders, projects, reports, and account settings.
+- Shared sidebar and notification components, with authentication and cart contexts.
+- Project status tables and progress indicators using sample records.
+- Component-specific CSS and responsive layout rules.
+- Create React App build scripts and GitHub Pages deployment configuration.
 
-### Prerequisites
+## Mock behavior and boundaries
 
-- Node.js (v14 or higher)
-- npm (v6 or higher)
+| Area | Current behavior |
+| --- | --- |
+| Login | Checks hardcoded demo credentials in the browser. Context holds an in-memory authentication flag; this is UI gating, not backend authorization. |
+| Project tracking | Displays local sample records rather than live sequencing jobs. |
+| Enterprise verification | Presents onboarding forms; no backend verification service is included. |
+| Payments | The project payment handler is a logging placeholder. No payment integration is included. |
+| Reports and pipeline | Screens illustrate the intended flow; sequencing execution, data ingestion, and server-side report generation are not implemented. |
 
-### Installation
+Use dummy information only. The configured hosting address is `https://zymomicrobiome.site`; its availability was not verified during this documentation update.
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/zymo-enterprise.git
-cd zymo-enterprise
-```
+## Technical approach
 
-2. Install dependencies:
-```bash
-npm install
-```
+React Router expresses the multi-step journey, while Context shares session and cart state. Keeping the prototype client-side makes the UI flows easy to explore independently of a future backend.
 
-3. Start the development server:
-```bash
+- [App.js](src/App.js): route composition.
+- [AuthContext.js](src/context/AuthContext.js): demo session state.
+- [CartContext.js](src/context/CartContext.js): cart state.
+- [Project.js](src/components/Project.js): example records and status presentation.
+- `src/components/`: feature screens and corresponding styles.
+
+## Run locally
+
+Use Node.js and npm compatible with the pinned dependencies; a verified runtime version has not yet been documented.
+
+```sh
+git clone https://github.com/tongwux/zymo-microbiome-data-pipeline-dashboard.git
+cd zymo-microbiome-data-pipeline-dashboard
+npm ci
 npm start
 ```
 
-The application will be available at `http://localhost:3000`
+Open `http://localhost:3000`. Demo credentials are defined in `IndividualLogin.js` and `EnterpriseLogin.js`; these are not real accounts.
 
-## Building for Production
-
-To create a production build:
-
-```bash
+```sh
 npm run build
+npm test
 ```
 
-This will create an optimized production build in the `build` directory.
+These are available commands, not recorded passing results. The test runner is configured, but no business test suite or CI workflow is currently committed. Builds and live hosting were not exercised during this documentation review.
 
-## Deployment
+## Planned — not implemented
 
-### Option 1: Deploy to GitHub Pages
+- Backend-enforced authentication and authorization.
+- Persisted project/order APIs, with loading, empty, retry, and failure states.
+- Tests for onboarding and cart behavior, followed by CI.
+- An explicit integration contract between the portal and any future sequencing pipeline.
 
-1. Update the `homepage` field in `package.json` with your GitHub Pages URL
-2. Install gh-pages:
-```bash
-npm install --save-dev gh-pages
-```
-3. Deploy:
-```bash
-npm run deploy
-```
+## Project scope
 
-### Option 2: Deploy to Netlify
-
-1. Push your code to a Git repository
-2. Create a new site on Netlify and connect it to your repository
-3. Set the build command to `npm run build`
-4. Set the publish directory to `build`
-5. Deploy
-
-### Option 3: Deploy to Vercel
-
-1. Push your code to a Git repository
-2. Create a new project on Vercel and connect it to your repository
-3. Vercel will automatically detect the React app and configure the build settings
-4. Deploy
-
-## Available Scripts
-
-- `npm start` - Runs the app in development mode
-- `npm test` - Launches the test runner
-- `npm run build` - Builds the app for production
-- `npm run eject` - Ejects from Create React App
-- `npm run deploy` - Deploys to GitHub Pages
-
-## Technologies Used
-
-- React
-- React Router
-- React Icons
-- CSS3
-
-## License
-
-This project is licensed under the MIT License. 
+The current contribution visible in this repository is frontend workflow composition and business-interface prototyping. It does not establish production usage or data-pipeline performance, and no company endorsement is implied. This README grants no new software or asset license; consult repository license files and third-party terms before reuse.
