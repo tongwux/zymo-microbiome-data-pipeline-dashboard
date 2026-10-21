@@ -10,8 +10,8 @@ export default function AuthBoundary({ children }) {
   return <div className="login-page"><div className="login-container auth-callback-error">
     <div className="login-header"><h1>Email link unavailable</h1></div>
     <p role="alert">{callbackError}</p>
-    <p>Use the same browser and browser profile to request and open the link. Reopening an old link will not restore it.</p>
-    <p><a onClick={dismissCallbackError} className="portal-button" href={`${base}/#/forgot-password`}>Request a new reset link</a></p>
+    <p>For password recovery, use an email verification code instead of reopening this link.</p>
+    <p><a onClick={dismissCallbackError} className="portal-button" href={`${base}/#/forgot-password`}>Reset password with a code</a></p>
     <p><a onClick={dismissCallbackError} href={`${base}/#/login/individual`}>Back to sign in</a></p>
   </div></div>;
 }

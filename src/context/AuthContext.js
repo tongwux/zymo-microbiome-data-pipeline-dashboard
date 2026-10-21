@@ -96,6 +96,16 @@ export const AuthProvider = ({ children }) => {
     if (error) throw error;
   };
 
+  const verifyRecoveryCode = async (email, token) => {
+    const { data, error } = await requireAuthClient().auth.verifyOtp({
+      email: email.trim(), token: token.trim(), type: 'recovery',
+    });
+    if (error) throw error;
+    if (!data?.session) throw new Error('Unable to verify this code. Please request another code.');
+    setSession(data.session);
+    setRecoveringPassword(true);
+  };
+
   const updatePassword = async (password) => {
     const { error } = await requireAuthClient().auth.updateUser({ password });
     if (error) throw error;
@@ -109,7 +119,7 @@ export const AuthProvider = ({ children }) => {
       user, isAuthenticated: !!user, loading, authError, recoveringPassword, callbackError,
       // A user-selected portal preference, never an authorization role.
       userType: user?.user_metadata?.user_type || 'individual',
-      isConfigured: !!supabase, login, register, logout, requestPasswordReset, updatePassword,
+      isConfigured: !!supabase, login, register, logout, requestPasswordReset, verifyRecoveryCode, updatePassword,
       dismissCallbackError: () => setCallbackError(''),
     }}>
       {children}

@@ -14,8 +14,7 @@ export default function AccountAuth({ mode = 'login', portal = 'individual' }) {
   const [message, setMessage] = useState('');
   const registering = mode === 'register';
   const resetting = mode === 'reset';
-  const forgot = mode === 'forgot';
-  const title = registering ? 'Create your account' : resetting ? 'Set a new password' : forgot ? 'Reset your password' : `${portal === 'enterprise' ? 'Enterprise' : 'Individual'} Login`;
+  const title = registering ? 'Create your account' : resetting ? 'Set a new password' : `${portal === 'enterprise' ? 'Enterprise' : 'Individual'} Login`;
 
   if (auth.loading) return <p role="status">Restoring your session...</p>;
   if (auth.isAuthenticated && !resetting && !auth.recoveringPassword) return <Navigate to="/dashboard" replace />;
@@ -31,9 +30,7 @@ export default function AccountAuth({ mode = 'login', portal = 'individual' }) {
       if (registering) {
         const data = await auth.register({ email, password, userType });
         if (!data.session) setMessage('Check your email to confirm your account. Open the confirmation link in this same browser, then sign in.');
-      } else if (forgot) {
-        await auth.requestPasswordReset(email);
-        setMessage('If an account exists for this email, a reset link will be sent. Open it in this same browser.');
+
       } else if (resetting) {
         await auth.updatePassword(password);
         setMessage('Password updated.');
@@ -53,14 +50,14 @@ export default function AccountAuth({ mode = 'login', portal = 'individual' }) {
     {message && <p role="status">{message}</p>}
     <form className="login-form" onSubmit={submit}>
       {!resetting && <div className="form-group"><label htmlFor="auth-email">Email</label><input id="auth-email" type="email" autoComplete="email" required value={email} onChange={e => setEmail(e.target.value)} /></div>}
-      {!forgot && <div className="form-group"><label htmlFor="auth-password">{resetting ? 'New password' : 'Password'}</label><input id="auth-password" type="password" autoComplete={registering || resetting ? 'new-password' : 'current-password'} minLength={registering || resetting ? 12 : undefined} required value={password} onChange={e => setPassword(e.target.value)} />{(registering || resetting) && <small>Use at least 12 characters.</small>}</div>}
+      {<div className="form-group"><label htmlFor="auth-password">{resetting ? 'New password' : 'Password'}</label><input id="auth-password" type="password" autoComplete={registering || resetting ? 'new-password' : 'current-password'} minLength={registering || resetting ? 12 : undefined} required value={password} onChange={e => setPassword(e.target.value)} />{(registering || resetting) && <small>Use at least 12 characters.</small>}</div>}
       {(registering || resetting) && <div className="form-group"><label htmlFor="auth-confirmation">Confirm password</label><input id="auth-confirmation" type="password" autoComplete="new-password" required value={confirmation} onChange={e => setConfirmation(e.target.value)} /></div>}
       {registering && <div className="form-group"><label htmlFor="auth-portal">Portal</label><select id="auth-portal" value={userType} onChange={e => setUserType(e.target.value)}><option value="individual">Individual</option><option value="enterprise">Enterprise</option></select><small>Portal selection does not verify company membership.</small></div>}
-      <button className="login-button" type="submit" disabled={pending || !auth.isConfigured}>{pending ? 'Please wait...' : registering ? 'Create account' : forgot ? 'Send reset link' : resetting ? 'Update password' : 'Sign In'}</button>
+      <button className="login-button" type="submit" disabled={pending || !auth.isConfigured}>{pending ? 'Please wait...' : registering ? 'Create account' : resetting ? 'Update password' : 'Sign In'}</button>
     </form>
     <div className="register-link">
       {!registering && !resetting && <p><Link to="/register">Create an account</Link></p>}
-      {!forgot && !resetting && <p><Link to="/forgot-password">Forgot password?</Link></p>}
+      {!resetting && <p><Link to="/forgot-password">Forgot password?</Link></p>}
       <p><Link to="/login">Back to login portals</Link></p>
       {resetting && !auth.recoveringPassword && message && <Link to="/dashboard">Continue to dashboard</Link>}
     </div>

@@ -5,7 +5,7 @@ import { AuthProvider, useAuth } from './AuthContext';
 import { supabase, authCallback, isPasswordRecovery } from '../lib/supabase';
 
 jest.mock('../lib/supabase', () => {
-  const client = { auth: { initialize: jest.fn(), getSession: jest.fn(), onAuthStateChange: jest.fn(), signInWithPassword: jest.fn(), signUp: jest.fn(), signOut: jest.fn() } };
+  const client = { auth: { initialize: jest.fn(), getSession: jest.fn(), onAuthStateChange: jest.fn(), signInWithPassword: jest.fn(), signUp: jest.fn(), signOut: jest.fn(), verifyOtp: jest.fn() } };
   return { authCallback: { isCallback: false }, isPasswordRecovery: jest.fn(() => false), finishPasswordRecovery: jest.fn(), supabase: client, requireAuthClient: () => client, authRedirectUrl: () => 'https://example.com/portal/' };
 });
 const session = { access_token: 'test-token', user: { id: 'user-a', email: 'a@example.com' } };
@@ -17,6 +17,7 @@ function Probe() {
   return <><p role="status">{auth.loading ? 'loading' : auth.user?.email || 'signed out'}</p>
     <p>{error || auth.callbackError || auth.authError}</p><p>{auth.recoveringPassword ? 'recovery form' : 'normal session'}</p>
     <button onClick={() => auth.login(' a@example.com ', 'secret').catch(e => setError(e.message))}>login</button>
+    <button onClick={() => auth.verifyRecoveryCode(' a@example.com ', '001234').catch(e => setError(e.message))}>verify code</button>
     <button onClick={() => auth.logout().catch(e => setError(e.message))}>logout</button>
     <button onClick={() => auth.register({ email: ' new@example.com ', password: 'long-password', userType: 'individual' }).catch(e => setError(e.message))}>register</button></>;
 }
@@ -112,4 +113,23 @@ it('retains recovery intent if the SDK completed before React subscribed', async
   render(<AuthProvider><Probe /></AuthProvider>);
   await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('a@example.com'));
   expect(screen.getByText('recovery form')).toBeInTheDocument();
+});
+
+it('exchanges an emailed recovery code for a reset session', async () => {
+  supabase.auth.verifyOtp.mockResolvedValue({ data: { session }, error: null });
+  render(<AuthProvider><Probe /></AuthProvider>);
+  await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('signed out'));
+  fireEvent.click(screen.getByText('verify code'));
+  await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('a@example.com'));
+  expect(supabase.auth.verifyOtp).toHaveBeenCalledWith({ email: 'a@example.com', token: '001234', type: 'recovery' });
+  expect(screen.getByText('recovery form')).toBeInTheDocument();
+});
+it('does not create a recovery session when OTP verification fails', async () => {
+  supabase.auth.verifyOtp.mockResolvedValue({ error: new Error('Invalid recovery code') });
+  render(<AuthProvider><Probe /></AuthProvider>);
+  await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('signed out'));
+  fireEvent.click(screen.getByText('verify code'));
+  await screen.findByText('Invalid recovery code');
+  expect(screen.getByRole('status')).toHaveTextContent('signed out');
+  expect(screen.getByText('normal session')).toBeInTheDocument();
 });

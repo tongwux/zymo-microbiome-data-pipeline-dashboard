@@ -11,7 +11,7 @@ export function readAuthCallback(href) {
 }
 
 export function callbackErrorMessage(code) {
-  if (code === 'otp_expired' || code === 'access_denied') return 'This email link has expired or has already been used. Request a new link and open only the newest email.';
+  if (code === 'otp_expired' || code === 'access_denied') return 'This email link has expired or has already been used.';
   return 'This email link could not complete sign-in. Request a new link in the browser where you will open the email, then try again there.';
 }
 
