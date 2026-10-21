@@ -2,11 +2,11 @@ import React from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { AuthProvider, useAuth } from './AuthContext';
-import { supabase } from '../lib/supabase';
+import { supabase, authCallback, isPasswordRecovery } from '../lib/supabase';
 
 jest.mock('../lib/supabase', () => {
-  const client = { auth: { getSession: jest.fn(), onAuthStateChange: jest.fn(), signInWithPassword: jest.fn(), signUp: jest.fn(), signOut: jest.fn() } };
-  return { supabase: client, requireAuthClient: () => client, authRedirectUrl: () => 'https://example.com/portal/' };
+  const client = { auth: { initialize: jest.fn(), getSession: jest.fn(), onAuthStateChange: jest.fn(), signInWithPassword: jest.fn(), signUp: jest.fn(), signOut: jest.fn() } };
+  return { authCallback: { isCallback: false }, isPasswordRecovery: jest.fn(() => false), finishPasswordRecovery: jest.fn(), supabase: client, requireAuthClient: () => client, authRedirectUrl: () => 'https://example.com/portal/' };
 });
 const session = { access_token: 'test-token', user: { id: 'user-a', email: 'a@example.com' } };
 let notify;
@@ -15,13 +15,17 @@ function Probe() {
   const auth = useAuth();
   const [error, setError] = React.useState('');
   return <><p role="status">{auth.loading ? 'loading' : auth.user?.email || 'signed out'}</p>
-    <p>{error || auth.authError}</p>
+    <p>{error || auth.callbackError || auth.authError}</p><p>{auth.recoveringPassword ? 'recovery form' : 'normal session'}</p>
     <button onClick={() => auth.login(' a@example.com ', 'secret').catch(e => setError(e.message))}>login</button>
     <button onClick={() => auth.logout().catch(e => setError(e.message))}>logout</button>
     <button onClick={() => auth.register({ email: ' new@example.com ', password: 'long-password', userType: 'individual' }).catch(e => setError(e.message))}>register</button></>;
 }
 beforeEach(() => {
   jest.clearAllMocks();
+  Object.assign(authCallback, { isCallback: false, hasError: false, hasCode: false, errorCode: null });
+  isPasswordRecovery.mockReturnValue(false);
+  supabase.auth.initialize.mockResolvedValue({ error: null });
+  window.history.replaceState(null, '', '/');
   unsubscribe = jest.fn();
   supabase.auth.onAuthStateChange.mockImplementation(callback => { notify = callback; return { data: { subscription: { unsubscribe } } }; });
   supabase.auth.getSession.mockResolvedValue({ data: { session: null }, error: null });
@@ -81,4 +85,31 @@ it('handles failed session restoration without leaving loading stuck', async () 
   render(<AuthProvider><Probe /></AuthProvider>);
   await screen.findByText('Unable to restore your session. Please sign in again.');
   expect(screen.getByRole('status')).toHaveTextContent('signed out');
+});
+
+it('shows an expired callback even with an existing valid session', async () => {
+  Object.assign(authCallback, { isCallback: true, hasError: true, errorCode: 'otp_expired' });
+  window.history.replaceState(null, '', '/?error_code=otp_expired#error=access_denied');
+  supabase.auth.getSession.mockResolvedValue({ data: { session }, error: null });
+  render(<AuthProvider><Probe /></AuthProvider>);
+  await screen.findByText(/This email link has expired/);
+  expect(window.location.search).toBe('');
+  expect(window.location.hash).toBe('#/');
+  expect(supabase.auth.signOut).not.toHaveBeenCalled();
+});
+it('explains a code callback without a session instead of leaving a blank route', async () => {
+  Object.assign(authCallback, { isCallback: true, hasCode: true });
+  window.history.replaceState(null, '', '/?code=placeholder');
+  render(<AuthProvider><Probe /></AuthProvider>);
+  await screen.findByText(/Request a new link in the browser/);
+  expect(screen.getByRole('status')).toHaveTextContent('signed out');
+  expect(window.location.search).toBe('');
+});
+it('retains recovery intent if the SDK completed before React subscribed', async () => {
+  Object.assign(authCallback, { isCallback: true, hasCode: true });
+  isPasswordRecovery.mockReturnValue(true);
+  supabase.auth.getSession.mockResolvedValue({ data: { session }, error: null });
+  render(<AuthProvider><Probe /></AuthProvider>);
+  await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('a@example.com'));
+  expect(screen.getByText('recovery form')).toBeInTheDocument();
 });
