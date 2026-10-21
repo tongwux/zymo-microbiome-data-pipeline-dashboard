@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { supabase, requireAuthClient, authRedirectUrl } from '../lib/supabase';
+import { supabase, requireAuthClient, authRedirectUrl, authCallback, isPasswordRecovery, finishPasswordRecovery } from '../lib/supabase';
+
+import { callbackErrorMessage, cleanAuthCallbackUrl } from '../lib/auth-callback';
 
 const AuthContext = createContext();
 
@@ -7,7 +9,8 @@ export const AuthProvider = ({ children }) => {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState('');
-  const [recoveringPassword, setRecoveringPassword] = useState(false);
+  const [recoveringPassword, setRecoveringPassword] = useState(isPasswordRecovery);
+  const [callbackError, setCallbackError] = useState('');
 
   useEffect(() => {
     if (!supabase) { setLoading(false); return; }
@@ -18,10 +21,37 @@ export const AuthProvider = ({ children }) => {
       if (!active) return;
       setSession(nextSession);
       setAuthError('');
-      setLoading(false);
+      if (!authCallback.isCallback) setLoading(false);
       if (event === 'PASSWORD_RECOVERY') setRecoveringPassword(true);
       if (event === 'SIGNED_OUT') setRecoveringPassword(false);
     });
+    if (isPasswordRecovery()) setRecoveringPassword(true);
+    if (authCallback.isCallback) {
+      // Inspect initialization errors explicitly; getSession alone can hide a
+      // failed callback behind an otherwise valid or empty stored session.
+      (async () => {
+        try {
+          const initialized = await supabase.auth.initialize();
+          const { data, error } = await supabase.auth.getSession();
+          if (!active) return;
+          setSession(data?.session || null);
+          const codeWasNotExchanged = authCallback.hasCode && new URL(window.location.href).searchParams.has('code');
+          if (authCallback.hasError || initialized.error || error || codeWasNotExchanged || !data?.session) {
+            setCallbackError(callbackErrorMessage(authCallback.errorCode));
+          } else if (isPasswordRecovery()) {
+            setRecoveringPassword(true);
+          }
+        } catch {
+          if (active) setCallbackError(callbackErrorMessage(authCallback.errorCode));
+        } finally {
+          if (active) {
+            window.history.replaceState(null, '', cleanAuthCallbackUrl(window.location.href));
+            setLoading(false);
+          }
+        }
+      })();
+      return () => { active = false; subscription.unsubscribe(); };
+    }
     const initialRevision = revision;
     supabase.auth.getSession().then(({ data, error }) => {
       if (!active || revision !== initialRevision) return;
@@ -70,12 +100,13 @@ export const AuthProvider = ({ children }) => {
     const { error } = await requireAuthClient().auth.updateUser({ password });
     if (error) throw error;
     setRecoveringPassword(false);
+    finishPasswordRecovery();
   };
 
   const user = session?.user || null;
   return (
     <AuthContext.Provider value={{
-      user, isAuthenticated: !!user, loading, authError, recoveringPassword,
+      user, isAuthenticated: !!user, loading, authError, recoveringPassword, callbackError,
       // A user-selected portal preference, never an authorization role.
       userType: user?.user_metadata?.user_type || 'individual',
       isConfigured: !!supabase, login, register, logout, requestPasswordReset, updatePassword,

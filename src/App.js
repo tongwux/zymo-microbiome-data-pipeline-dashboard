@@ -18,6 +18,7 @@ import Settings from './components/Settings';
 import ProjectDetail from './components/ProjectDetail';
 import AmpliconSequencing from './components/AmpliconSequencing';
 import AccountAuth from './components/AccountAuth';
+import AuthBoundary from './components/AuthBoundary';
 import OrderSuccess from './components/OrderSuccess';
 import './App.css';
 
@@ -37,6 +38,7 @@ function App() {
   return (
     <AuthProvider>
       <CartProvider>
+        <AuthBoundary>
         <Router>
           <RecoveryRedirect />
           <div className="app">
@@ -133,6 +135,7 @@ function App() {
             </Routes>
           </div>
         </Router>
+        </AuthBoundary>
       </CartProvider>
     </AuthProvider>
   );
