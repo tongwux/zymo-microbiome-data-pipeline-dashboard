@@ -17,7 +17,8 @@ import './Dashboard.css';
 
 const CompletedProjects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
-  const [isNotesModalOpen, setIsNotesModalOpen] = useState(false);
+  const [activeModal, setActiveModal] = useState(null);
+  const [noteDraft, setNoteDraft] = useState('');
   const [projectNotes, setProjectNotes] = useState({});
 
   // Mock completed projects data
@@ -75,7 +76,8 @@ const CompletedProjects = () => {
   ];
 
   const handleViewReport = (projectId) => {
-    console.log('View report for project:', projectId);
+    setSelectedProject(projects.find(project => project.id === projectId));
+    setActiveModal('report');
   };
 
   const handleViewRawData = (projectId) => {
@@ -88,11 +90,12 @@ const CompletedProjects = () => {
 
   const handleOpenNotes = (project) => {
     setSelectedProject(project);
-    setIsNotesModalOpen(true);
+    setNoteDraft(projectNotes[project.id] || '');
+    setActiveModal('notes');
   };
 
-  const handleCloseNotes = () => {
-    setIsNotesModalOpen(false);
+  const handleCloseModal = () => {
+    setActiveModal(null);
     setSelectedProject(null);
   };
 
@@ -100,9 +103,9 @@ const CompletedProjects = () => {
     if (selectedProject) {
       setProjectNotes(prev => ({
         ...prev,
-        [selectedProject.id]: projectNotes[selectedProject.id] || ''
+        [selectedProject.id]: noteDraft
       }));
-      handleCloseNotes();
+      handleCloseModal();
     }
   };
 
@@ -203,27 +206,25 @@ const CompletedProjects = () => {
       </div>
 
       {/* Notes Modal */}
-      {isNotesModalOpen && selectedProject && (
+      {activeModal === 'notes' && selectedProject && (
         <div className="modal-overlay">
-          <div className="modal-content">
+          <div className="modal-content" role="dialog" aria-modal="true" aria-labelledby="project-notes-title">
             <div className="modal-header">
-              <h2>Project Notes - {selectedProject.name}</h2>
-              <button className="close-button" onClick={handleCloseNotes}>
+              <h2 id="project-notes-title">Project Notes - {selectedProject.name}</h2>
+              <button className="close-button" aria-label="Close notes" onClick={handleCloseModal}>
                 <FiX />
               </button>
             </div>
             <div className="modal-body">
               <textarea
                 className="notes-textarea"
-                value={projectNotes[selectedProject.id] || ''}
-                onChange={(e) => setProjectNotes(prev => ({
-                  ...prev,
-                  [selectedProject.id]: e.target.value
-                }))}
+                aria-label="Project notes"
+                value={noteDraft}
+                onChange={(e) => setNoteDraft(e.target.value)}
                 placeholder="Add your notes here..."
               />
               <div className="modal-actions">
-                <button className="cancel-button" onClick={handleCloseNotes}>
+                <button className="cancel-button" onClick={handleCloseModal}>
                   Cancel
                 </button>
                 <button className="save-button" onClick={handleSaveNotes}>
@@ -236,12 +237,12 @@ const CompletedProjects = () => {
       )}
 
       {/* Project Report Modal */}
-      {selectedProject && (
+      {activeModal === 'report' && selectedProject && (
         <div className="modal-overlay">
-          <div className="modal-content report-modal">
+          <div className="modal-content report-modal" role="dialog" aria-modal="true" aria-labelledby="project-report-title">
             <div className="modal-header">
-              <h2>Project Report - {selectedProject.name}</h2>
-              <button className="close-button" onClick={() => setSelectedProject(null)}>
+              <h2 id="project-report-title">Project Report - {selectedProject.name}</h2>
+              <button className="close-button" aria-label="Close report" onClick={handleCloseModal}>
                 <FiX />
               </button>
             </div>
