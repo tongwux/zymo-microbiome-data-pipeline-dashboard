@@ -2,9 +2,12 @@ import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FiHome, FiFolder, FiBarChart2, FiShoppingCart, FiSettings, FiHelpCircle, FiUser, FiLogOut } from 'react-icons/fi';
 import './Sidebar.css';
+import { useAuth } from '../context/AuthContext';
 
 const Sidebar = ({ onLogout }) => {
   const navigate = useNavigate();
+  const { logout, user } = useAuth();
+  const [logoutError, setLogoutError] = React.useState('');
   const location = useLocation();
 
   const mainNavItems = [
@@ -42,11 +45,12 @@ const Sidebar = ({ onLogout }) => {
   const handleLogout = async () => {
     try {
       // First call onLogout to update authentication state
-      await onLogout();
+      await logout();
+      if (onLogout) await onLogout();
       // Then navigate to login page with replace to prevent going back
       navigate('/login', { replace: true });
     } catch (error) {
-      console.error('Error during logout:', error);
+      setLogoutError('Unable to sign out. Please try again.');
     }
   };
 
@@ -59,6 +63,8 @@ const Sidebar = ({ onLogout }) => {
       </div>
 
       <div className="sidebar-content">
+        {user && <p className="signed-in-email">{user.email}</p>}
+        {logoutError && <p role="alert">{logoutError}</p>}
         <div className="nav-section">
           <h2>Main Menu</h2>
           <nav>

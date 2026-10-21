@@ -34,3 +34,6 @@ yarn-error.log*
 .Trashes
 ehthumbs.db
 Thumbs.db 
+# Local authentication configuration
+.env
+.env.production

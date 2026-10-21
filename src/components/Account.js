@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { FiUser, FiMail, FiPhone, FiMapPin, FiEdit2, FiSave, FiX, FiCheckCircle, FiAlertCircle, FiUpload } from 'react-icons/fi';
 import Sidebar from './Sidebar';
 import './Account.css';
+import { useAuth } from '../context/AuthContext';
 
 const Account = () => {
+  const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [notifications] = useState([
     { id: 1, message: 'Profile updated successfully', type: 'success' },
@@ -11,8 +13,8 @@ const Account = () => {
   ]);
 
   const [profile, setProfile] = useState({
-    name: 'John Doe',
-    email: 'john.doe@example.com',
+    name: user?.email?.split('@')[0] || 'Account',
+    email: user?.email || '',
     phone: '+1 (555) 123-4567',
     address: '123 Research Street, Science City, SC 12345',
     organization: 'Research Institute',
@@ -113,11 +115,12 @@ const Account = () => {
                       <input
                         type="email"
                         name="email"
-                        value={profile.email}
+                        readOnly
+                        value={user?.email || ''}
                         onChange={handleChange}
                       />
                     ) : (
-                      <p>{profile.email}</p>
+                      <p>{user?.email}</p>
                     )}
                   </div>
 
