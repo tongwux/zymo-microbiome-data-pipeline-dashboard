@@ -10,7 +10,7 @@ const Login = () => {
     <div className="login-page">
       <div className="login-container">
         <div className="login-header">
-          <img src="/assets/zymo-logo.svg" alt="ZYMO Logo" className="login-logo" />
+          <img src={`${process.env.PUBLIC_URL}/assets/zymo-logo.svg`} alt="ZYMO Logo" className="login-logo" />
           <h1>Welcome to ZYMO</h1>
           <p>Choose your login portal</p>
         </div>
