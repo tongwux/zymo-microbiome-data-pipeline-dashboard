@@ -1,13 +1,13 @@
 # Authentication integration status
 
-Connected project: qpccmhrdzjhnyaqjfzab. Browser integration prepared; publishing and live signup verification await Auth URL configuration.
+Connected project: qpccmhrdzjhnyaqjfzab. Email/password registration is deployed. The user confirmed the hosted Site URL and redirect allowlist.
 
 ## Backend setup
 
 - Use Supabase Auth email/password accounts. Passwords belong in Supabase Auth, never in a public profiles table or frontend code.
 - Configure the Site URL and allowed redirect URL as `https://tongwux.github.io/zymo-microbiome-data-pipeline-dashboard/` (include trailing slash).
 - Keep email confirmation enabled. Configure a minimum password length of at least 12 characters and appropriate rate limits. Configure a production email sender before opening registration broadly.
-- PKCE confirmation and password-recovery links must be opened in the same browser that requested them.
+- Signup confirmation uses PKCE and the same browser that requested it. Password recovery now uses a manually entered email OTP; it does not require an emailed callback link or same-browser verifier.
 - Provide only the project URL and browser-safe publishable key in the frontend build. Never use a secret/service-role key in REACT_APP variables.
 
 ## Local/build configuration
@@ -29,3 +29,11 @@ Verify real registration, confirmation email callback, invalid-password handling
 Validation: 14 unit/component tests passed; the real Auth API rejected invalid credentials; security advisors reported no findings. These checks do not prove live signup, email delivery, or confirmation callbacks.
 
 No custom SMTP is configured by this change. Supabase default mail delivery only supports organization team email addresses, so use the organization owner email for the first test. Public signup requires a configured SMTP sender.
+
+## Recovery OTP email template
+
+Before deploying the recovery-code screen, paste `recovery-email-template.html` into Authentication > Emails > Reset password > Body and save. Keep password recovery and email verification enabled. The template contains `{{ .Token }}` and deliberately excludes `{{ .ConfirmationURL }}` so email link previews cannot consume the code.
+
+The frontend calls resetPasswordForEmail to send the message, verifyOtp with type recovery to validate the entered code, then updateUser to set the password through the authenticated recovery session. Codes are never stored or logged. Requests have a 60-second client cooldown in addition to Supabase's server rate limits. Invalid codes never open the password form.
+
+Current validation: 29 unit/component tests passed. The first live reset-code verification and user password change require the user's own mailbox; neither has been simulated by bypassing authentication.

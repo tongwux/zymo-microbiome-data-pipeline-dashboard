@@ -15,7 +15,7 @@ it('offers a fresh reset link when a callback fails', () => {
   useAuth.mockReturnValue({ loading: false, callbackError: 'Email link has expired.', dismissCallbackError: dismiss });
   render(<AuthBoundary><p>application routes</p></AuthBoundary>);
   expect(screen.getByRole('alert')).toHaveTextContent('expired');
-  const retry = screen.getByRole('link', { name: 'Request a new reset link' });
+  const retry = screen.getByRole('link', { name: 'Reset password with a code' });
   expect(retry).toHaveAttribute('href', '/#/forgot-password');
   fireEvent.click(retry);
   expect(dismiss).toHaveBeenCalledTimes(1);

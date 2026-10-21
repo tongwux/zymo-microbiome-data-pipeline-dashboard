@@ -19,6 +19,7 @@ import ProjectDetail from './components/ProjectDetail';
 import AmpliconSequencing from './components/AmpliconSequencing';
 import AccountAuth from './components/AccountAuth';
 import AuthBoundary from './components/AuthBoundary';
+import PasswordRecovery from './components/PasswordRecovery';
 import OrderSuccess from './components/OrderSuccess';
 import './App.css';
 
@@ -44,7 +45,7 @@ function App() {
           <div className="app">
             <Routes>
               <Route path="/register" element={<AccountAuth mode="register" />} />
-              <Route path="/forgot-password" element={<AccountAuth mode="forgot" />} />
+              <Route path="/forgot-password" element={<PasswordRecovery />} />
               <Route path="/reset-password" element={<AccountAuth mode="reset" />} />
               <Route path="/login" element={<Login />} />
               <Route path="/login/individual" element={<IndividualLogin />} />

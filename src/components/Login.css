@@ -148,3 +148,5 @@
 .auth-callback-error p { margin: 1rem 0; line-height: 1.6; }
 .auth-callback-error .portal-button { display: inline-flex; text-decoration: none; }
 .auth-callback-error .login-header h1 { font-size: 2.5rem; }
+
+.auth-recovery-form p { line-height: 1.6; margin: 1rem 0; }
