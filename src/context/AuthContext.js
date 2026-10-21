@@ -110,6 +110,7 @@ export const AuthProvider = ({ children }) => {
       // A user-selected portal preference, never an authorization role.
       userType: user?.user_metadata?.user_type || 'individual',
       isConfigured: !!supabase, login, register, logout, requestPasswordReset, updatePassword,
+      dismissCallbackError: () => setCallbackError(''),
     }}>
       {children}
     </AuthContext.Provider>
