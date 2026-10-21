@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/zymo-microbiome-data-pipeline-dashboard/static/css/main.fc1c4645.css",
-    "main.js": "/zymo-microbiome-data-pipeline-dashboard/static/js/main.833c5dda.js",
+    "main.css": "/zymo-microbiome-data-pipeline-dashboard/static/css/main.8aa62042.css",
+    "main.js": "/zymo-microbiome-data-pipeline-dashboard/static/js/main.7bf9b8fc.js",
     "static/js/453.c0728b97.chunk.js": "/zymo-microbiome-data-pipeline-dashboard/static/js/453.c0728b97.chunk.js",
     "index.html": "/zymo-microbiome-data-pipeline-dashboard/index.html",
-    "main.fc1c4645.css.map": "/zymo-microbiome-data-pipeline-dashboard/static/css/main.fc1c4645.css.map",
-    "main.833c5dda.js.map": "/zymo-microbiome-data-pipeline-dashboard/static/js/main.833c5dda.js.map",
+    "main.8aa62042.css.map": "/zymo-microbiome-data-pipeline-dashboard/static/css/main.8aa62042.css.map",
+    "main.7bf9b8fc.js.map": "/zymo-microbiome-data-pipeline-dashboard/static/js/main.7bf9b8fc.js.map",
     "453.c0728b97.chunk.js.map": "/zymo-microbiome-data-pipeline-dashboard/static/js/453.c0728b97.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.fc1c4645.css",
-    "static/js/main.833c5dda.js"
+    "static/css/main.8aa62042.css",
+    "static/js/main.7bf9b8fc.js"
   ]
 }
