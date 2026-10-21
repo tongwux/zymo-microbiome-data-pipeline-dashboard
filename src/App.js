@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import Sidebar from './components/Sidebar';
@@ -17,22 +17,33 @@ import Onboarding from './components/Onboarding';
 import Settings from './components/Settings';
 import ProjectDetail from './components/ProjectDetail';
 import AmpliconSequencing from './components/AmpliconSequencing';
-import NotificationBar from './components/NotificationBar';
+import AccountAuth from './components/AccountAuth';
 import OrderSuccess from './components/OrderSuccess';
 import './App.css';
 
 const PrivateRoute = ({ children }) => {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  const { isAuthenticated, loading } = useAuth();
+  if (loading) return <p role="status">Restoring your session...</p>;
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
+
+function RecoveryRedirect() {
+  const { recoveringPassword } = useAuth();
+  const location = useLocation();
+  return recoveringPassword && location.pathname !== '/reset-password' ? <Navigate to="/reset-password" replace /> : null;
+}
 
 function App() {
   return (
     <AuthProvider>
       <CartProvider>
         <Router>
+          <RecoveryRedirect />
           <div className="app">
             <Routes>
+              <Route path="/register" element={<AccountAuth mode="register" />} />
+              <Route path="/forgot-password" element={<AccountAuth mode="forgot" />} />
+              <Route path="/reset-password" element={<AccountAuth mode="reset" />} />
               <Route path="/login" element={<Login />} />
               <Route path="/login/individual" element={<IndividualLogin />} />
               <Route path="/login/enterprise" element={<EnterpriseLogin />} />
@@ -110,15 +121,15 @@ function App() {
                 }
               />
               <Route path="/" element={<Navigate to="/login" />} />
-              <Route path="/ongoing-projects" element={<OngoingProjects />} />
-              <Route path="/reports" element={<Reports />} />
+              <Route path="/ongoing-projects" element={<PrivateRoute><OngoingProjects /></PrivateRoute>} />
+              <Route path="/reports" element={<PrivateRoute><Reports /></PrivateRoute>} />
               <Route path="/services" element={<Services />} />
               <Route path="/services/amplicon-sequencing" element={<AmpliconSequencing />} />
-              <Route path="/services/:id" element={<ProjectDetail />} />
-              <Route path="/projects/:id" element={<ProjectDetail />} />
-              <Route path="/order-success" element={<OrderSuccess />} />
+              <Route path="/services/:id" element={<PrivateRoute><ProjectDetail /></PrivateRoute>} />
+              <Route path="/projects/:id" element={<PrivateRoute><ProjectDetail /></PrivateRoute>} />
+              <Route path="/order-success" element={<PrivateRoute><OrderSuccess /></PrivateRoute>} />
               <Route path="/faq" element={<FAQ />} />
-              <Route path="/settings" element={<Settings />} />
+              <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
             </Routes>
           </div>
         </Router>
